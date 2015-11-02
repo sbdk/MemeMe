@@ -116,7 +116,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         var initView = UIViewController()
         initView = (storyboard?.instantiateViewControllerWithIdentifier("memeEditViewController"))!
         
-        self.presentViewController(initView, animated: false, completion: nil)
+        presentViewController(initView, animated: false, completion: nil)
         
     }
     
@@ -144,7 +144,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     }
     
     func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        self.dismissViewControllerAnimated(true, completion: nil)
+        dismissViewControllerAnimated(true, completion: nil)
     }
     
     
