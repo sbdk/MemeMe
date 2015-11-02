@@ -41,8 +41,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             shareButton.enabled = false
         }
         
-        self.subscribeToKeyboarWillShowdNotifications()
-        self.subscribeToKeyboarWillHidedNotifications()
+        subscribeToKeyboarWillShowdNotifications()
+        subscribeToKeyboarWillHidedNotifications()
     }
     
     override func viewDidLoad() {
@@ -80,7 +80,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.PhotoLibrary
         
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        presentViewController(imagePicker, animated: true, completion: nil)
     }
 
     @IBAction func takePhoto(sender: AnyObject) {
@@ -89,7 +89,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         imagePicker.delegate = self
         imagePicker.sourceType = UIImagePickerControllerSourceType.Camera
         
-        self.presentViewController(imagePicker, animated: true, completion: nil)
+        presentViewController(imagePicker, animated: true, completion: nil)
        
     }
     
@@ -107,14 +107,14 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
             }
         }
         
-        self.presentViewController(shareViewController, animated: true, completion: nil)
+        presentViewController(shareViewController, animated: true, completion: nil)
         
     }
     
     @IBAction func cancelMeme(sender: AnyObject) {
         
         var initView = UIViewController()
-        initView = (self.storyboard?.instantiateViewControllerWithIdentifier("memeEditViewController"))!
+        initView = (storyboard?.instantiateViewControllerWithIdentifier("memeEditViewController"))!
         
         self.presentViewController(initView, animated: false, completion: nil)
         
@@ -124,8 +124,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     override func viewWillDisappear(animated: Bool) {
         super.viewWillDisappear(animated)
         
-        self.unsubscribeFromKeyboarWillShowdNotifications()
-        self.unsubscribeFromKeyboarWillHidedNotifications()
+        unsubscribeFromKeyboarWillShowdNotifications()
+        unsubscribeFromKeyboarWillHidedNotifications()
     }
     
     
@@ -135,8 +135,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         
         if let tempImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
-            self.imagePickerView.image = tempImage
-            self.dismissViewControllerAnimated(true, completion: nil)
+            imagePickerView.image = tempImage
+            dismissViewControllerAnimated(true, completion: nil)
             
         //enable share button when finish picking image
         shareButton.enabled = true
@@ -171,7 +171,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         //make view rise or fall effect only valid for bottom textfield
         if bottomTextField.editing {
-        self.view.frame.origin.y -= getKeyboardHeight(notification)
+        view.frame.origin.y -= getKeyboardHeight(notification)
         }
         else {
             
@@ -182,7 +182,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         
         //make view rise or fall effect only valid for bottom textfield
         if bottomTextField.editing {
-        self.view.frame.origin.y += getKeyboardHeight(notifiction)
+        view.frame.origin.y += getKeyboardHeight(notifiction)
         }
     }
     
@@ -223,8 +223,8 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
         NaviBar.hidden = true
         toolBar.hidden = true
         
-        UIGraphicsBeginImageContext(self.view.frame.size)
-        self.view.drawViewHierarchyInRect(self.view.frame, afterScreenUpdates: true)
+        UIGraphicsBeginImageContext(view.frame.size)
+        view.drawViewHierarchyInRect(view.frame, afterScreenUpdates: true)
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()
         
