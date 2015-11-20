@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
+class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
     @IBOutlet weak var imagePickerView: UIImageView!
     @IBOutlet weak var cameraButton: UIBarButtonItem!
@@ -113,10 +113,7 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     @IBAction func cancelMeme(sender: AnyObject) {
         
-        var initView = UIViewController()
-        initView = (storyboard?.instantiateViewControllerWithIdentifier("memeEditViewController"))!
-        
-        presentViewController(initView, animated: false, completion: nil)
+        self.dismissViewControllerAnimated(true, completion: nil)
         
     }
     
@@ -170,19 +167,16 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     func keyboardWillShow(notification: NSNotification) {
         
         //make view rise or fall effect only valid for bottom textfield
-        if bottomTextField.editing {
-        view.frame.origin.y -= getKeyboardHeight(notification)
-        }
-        else {
-            
+        if bottomTextField.isFirstResponder(){
+            self.view.frame.origin.y = getKeyboardHeight(notification) * -1
         }
     }
     
     func keyboardWillHide(notifiction: NSNotification) {
         
         //make view rise or fall effect only valid for bottom textfield
-        if bottomTextField.editing {
-        view.frame.origin.y += getKeyboardHeight(notifiction)
+        if bottomTextField.isFirstResponder(){
+            self.view.frame.origin.y = 0
         }
     }
     

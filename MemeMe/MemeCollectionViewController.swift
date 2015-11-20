@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MemeCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
+class MemeCollectionViewController: UICollectionViewController {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -18,6 +18,8 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     override func viewWillAppear(animated: Bool) {
+        
+        self.collectionView!.reloadData()
         
     }
     
@@ -30,13 +32,13 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDelegate, 
         flowLayout.itemSize = CGSizeMake(dimension, dimension)
     }
     
-    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return self.memes.count
         
     }
     
-    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionCell", forIndexPath: indexPath)
         
@@ -49,7 +51,7 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDelegate, 
     }
     
     
-    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
         detailVC.meme = self.memes[indexPath.item]

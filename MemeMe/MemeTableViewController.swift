@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MemeTableViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class MemeTableViewController: UITableViewController {
     
     var memes: [Meme] {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
@@ -17,6 +17,7 @@ class MemeTableViewController: UIViewController, UITableViewDataSource, UITableV
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        self.tableView.reloadData()
 
     }
     
@@ -24,12 +25,12 @@ class MemeTableViewController: UIViewController, UITableViewDataSource, UITableV
         
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return self.memes.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
         let tableCell = tableView.dequeueReusableCellWithIdentifier("MemeTableCell", forIndexPath: indexPath)
         let meme = self.memes[indexPath.row]
@@ -44,7 +45,7 @@ class MemeTableViewController: UIViewController, UITableViewDataSource, UITableV
         return tableCell
     }
     
-    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
         detailVC.meme = self.memes[indexPath.row]
