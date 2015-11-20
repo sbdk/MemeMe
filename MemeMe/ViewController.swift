@@ -236,15 +236,11 @@ class ViewController: UIViewController, UIImagePickerControllerDelegate, UINavig
     
     func saveMeme() {
         
-        struct Meme {
-            var topText: String
-            var bottomText: String
-            var pickedImage: UIImage
-            var memedImage: UIImage
-        }
+        var meme = Meme (topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage(), creatTime: String(NSDate()))
         
-        let meme = Meme (topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage())
-        
+        let object = UIApplication.sharedApplication().delegate
+        let appDelegate = object as! AppDelegate
+        appDelegate.memes.append(meme)
     }
     
 }
