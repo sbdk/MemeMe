@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MemeCollectionViewController: UICollectionViewController {
+class MemeCollectionViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -19,14 +19,9 @@ class MemeCollectionViewController: UICollectionViewController {
     
     override func viewWillAppear(animated: Bool) {
         
-        super.viewWillAppear(animated)
-        collectionView!.reloadData()
-        
     }
     
     override func viewDidLoad() {
-        
-        super.viewDidLoad()
         
         let space: CGFloat = 3.0
         let dimension = (self.view.frame.size.width - (2 * space)) / 3.0
@@ -35,13 +30,13 @@ class MemeCollectionViewController: UICollectionViewController {
         flowLayout.itemSize = CGSizeMake(dimension, dimension)
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return self.memes.count
         
     }
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionCell", forIndexPath: indexPath)
         
@@ -54,7 +49,7 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     
-    override func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
         
         let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
         detailVC.meme = self.memes[indexPath.item]
