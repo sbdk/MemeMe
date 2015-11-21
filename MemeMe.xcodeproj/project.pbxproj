@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		BE0369841BFFF614009FF0A1 /* MemeCustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE0369831BFFF614009FF0A1 /* MemeCustomTableViewCell.swift */; };
 		BE1396DB1BE2D128000945C7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1396DA1BE2D128000945C7 /* AppDelegate.swift */; };
 		BE1396DD1BE2D128000945C7 /* MemeEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = BE1396DC1BE2D128000945C7 /* MemeEditViewController.swift */; };
 		BE1396E01BE2D128000945C7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = BE1396DE1BE2D128000945C7 /* Main.storyboard */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		BE0369831BFFF614009FF0A1 /* MemeCustomTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MemeCustomTableViewCell.swift; sourceTree = "<group>"; };
 		BE1396D71BE2D128000945C7 /* MemeMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MemeMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		BE1396DA1BE2D128000945C7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		BE1396DC1BE2D128000945C7 /* MemeEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MemeEditViewController.swift; sourceTree = "<group>"; };
@@ -115,6 +117,7 @@
 				BE1396E11BE2D128000945C7 /* Assets.xcassets */,
 				BE1396E31BE2D128000945C7 /* LaunchScreen.storyboard */,
 				BE1396E61BE2D128000945C7 /* Info.plist */,
+				BE0369831BFFF614009FF0A1 /* MemeCustomTableViewCell.swift */,
 			);
 			path = MemeMe;
 			sourceTree = "<group>";
@@ -270,6 +273,7 @@
 			files = (
 				BE4880D81BFD336400A7EA26 /* MemeCollectionViewController.swift in Sources */,
 				BE921E2B1BFE7CB100961AF4 /* MemeDetailViewController.swift in Sources */,
+				BE0369841BFFF614009FF0A1 /* MemeCustomTableViewCell.swift in Sources */,
 				BE1396DD1BE2D128000945C7 /* MemeEditViewController.swift in Sources */,
 				BE1396DB1BE2D128000945C7 /* AppDelegate.swift in Sources */,
 				BE4880DA1BFD3FAC00A7EA26 /* MemeTableViewController.swift in Sources */,

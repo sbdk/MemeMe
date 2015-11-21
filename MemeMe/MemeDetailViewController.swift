@@ -12,15 +12,13 @@ import UIKit
 class MemeDetailViewController: UIViewController {
     
     @IBOutlet weak var imageView: UIImageView!
-    @IBOutlet weak var label: UILabel!
     
     var meme: Meme!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        self.imageView.image = meme.memedImage
-        self.label.text = meme.creatTime
+        imageView.image = meme.memedImage
         
     }
 }

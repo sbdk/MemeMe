@@ -3,7 +3,9 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9051"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Constraints with non-1.0 multipliers" minToolsVersion="5.1"/>
     </dependencies>
     <scenes>
         <!--Sent Memes-->
@@ -14,35 +16,56 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemeTableCell" textLabel="bKg-rs-Ovc" detailTextLabel="g4J-7w-66M" style="IBUITableViewCellStyleValue1" id="lId-jX-ZQ3">
-                                <rect key="frame" x="0.0" y="92" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="MemeTableCell" rowHeight="80" id="lId-jX-ZQ3" customClass="MemeCustomTableViewCell" customModule="MemeMe" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="80"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="lId-jX-ZQ3" id="BRh-Q9-wA2">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="80"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="bKg-rs-Ovc">
-                                            <rect key="frame" x="15" y="12" width="31.5" height="19.5"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="1Ae-tS-oEW">
+                                            <rect key="frame" x="5" y="4" width="72" height="72"/>
                                             <animations/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="1Ae-tS-oEW" secondAttribute="height" multiplier="1:1" id="W3v-Ub-M4h"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dWr-pG-bZy">
+                                            <rect key="frame" x="137" y="5" width="233" height="16"/>
+                                            <animations/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Subtitle" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="g4J-7w-66M">
-                                            <rect key="frame" x="304" y="12" width="56" height="19.5"/>
-                                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="uur-5s-xpv">
+                                            <rect key="frame" x="137" y="59" width="233" height="16"/>
                                             <animations/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="16"/>
-                                            <color key="textColor" red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="calibratedRGB"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <animations/>
+                                    <constraints>
+                                        <constraint firstAttribute="bottom" secondItem="uur-5s-xpv" secondAttribute="bottom" constant="5" id="0bb-jo-Rmh"/>
+                                        <constraint firstItem="1Ae-tS-oEW" firstAttribute="height" secondItem="BRh-Q9-wA2" secondAttribute="height" multiplier="0.9" id="0hZ-0g-rqC"/>
+                                        <constraint firstAttribute="trailing" secondItem="dWr-pG-bZy" secondAttribute="trailing" constant="5" id="3rF-CZ-34z"/>
+                                        <constraint firstItem="dWr-pG-bZy" firstAttribute="top" secondItem="BRh-Q9-wA2" secondAttribute="top" constant="5" id="OKJ-Z3-rbg"/>
+                                        <constraint firstItem="1Ae-tS-oEW" firstAttribute="centerY" secondItem="BRh-Q9-wA2" secondAttribute="centerY" id="hxn-LI-hSM"/>
+                                        <constraint firstItem="uur-5s-xpv" firstAttribute="leading" secondItem="1Ae-tS-oEW" secondAttribute="trailing" constant="60" id="ocJ-Mc-TOU"/>
+                                        <constraint firstItem="1Ae-tS-oEW" firstAttribute="leading" secondItem="BRh-Q9-wA2" secondAttribute="leading" constant="5" id="rjt-Uy-fgb"/>
+                                        <constraint firstItem="dWr-pG-bZy" firstAttribute="leading" secondItem="1Ae-tS-oEW" secondAttribute="trailing" constant="60" id="rmZ-Vk-Yfd"/>
+                                        <constraint firstAttribute="trailing" secondItem="uur-5s-xpv" secondAttribute="trailing" constant="5" id="xdN-7K-iUF"/>
+                                    </constraints>
                                 </tableViewCellContentView>
                                 <animations/>
+                                <connections>
+                                    <outlet property="tableCellBottomLabel" destination="uur-5s-xpv" id="QlQ-1r-jWK"/>
+                                    <outlet property="tableCellImage" destination="1Ae-tS-oEW" id="9qC-Mj-y77"/>
+                                    <outlet property="tableCellTopLabel" destination="dWr-pG-bZy" id="9TN-DN-83h"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -51,7 +74,6 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Sent Memes" id="kc8-ti-uUQ">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="7Yb-P3-JPX"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="fTd-S6-SnT">
                             <connections>
                                 <segue destination="BYZ-38-t0r" kind="presentation" id="2Zf-Fc-wiN"/>
@@ -277,11 +299,13 @@
             </objects>
             <point key="canvasLocation" x="-220.5" y="30.5"/>
         </scene>
-        <!--Collection-->
+        <!--Navigation Controller-->
         <scene sceneID="izf-VX-5ex">
             <objects>
                 <navigationController id="CaF-eh-z40" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Collection" id="DvA-W4-Pdm"/>
+                    <tabBarItem key="tabBarItem" title="" image="collection" id="DvA-W4-Pdm">
+                        <inset key="imageInsets" minX="0.0" minY="7" maxX="0.0" maxY="-6"/>
+                    </tabBarItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="QGg-hX-66z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -304,7 +328,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <animations/>
-                        <color key="backgroundColor" red="0.90196079019999997" green="0.90196079019999997" blue="0.90196079019999997" alpha="1" colorSpace="calibratedRGB"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Kch-9Y-dcL">
                             <size key="itemSize" width="90" height="90"/>
                             <size key="headerReferenceSize" width="0.0" height="0.0"/>
@@ -312,7 +336,7 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MemeCollectionCell" id="yFy-3L-vvS">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" reuseIdentifier="MemeCollectionCell" id="yFy-3L-vvS">
                                 <rect key="frame" x="0.0" y="64" width="90" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
@@ -330,7 +354,6 @@
                         </connections>
                     </collectionView>
                     <navigationItem key="navigationItem" title="Sent Memes" id="Sat-qJ-lno">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="L2M-w5-AZT"/>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="MSF-lb-9SF">
                             <connections>
                                 <segue destination="BYZ-38-t0r" kind="presentation" id="yJ2-R8-Ydp"/>
@@ -358,24 +381,15 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OnJ-dO-tIU">
-                                <rect key="frame" x="166" y="642" width="42" height="20"/>
-                                <animations/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ljt-EX-mCh">
-                                <rect key="frame" x="0.0" y="30" width="375" height="597"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="ljt-EX-mCh">
+                                <rect key="frame" x="0.0" y="30" width="375" height="637"/>
                                 <animations/>
                             </imageView>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="4cv-6H-skJ" firstAttribute="top" secondItem="OnJ-dO-tIU" secondAttribute="bottom" constant="5" id="34G-bt-aX0"/>
-                            <constraint firstItem="4cv-6H-skJ" firstAttribute="top" secondItem="ljt-EX-mCh" secondAttribute="bottom" constant="40" id="5W2-pZ-q37"/>
-                            <constraint firstItem="OnJ-dO-tIU" firstAttribute="centerX" secondItem="DHl-el-oOQ" secondAttribute="centerX" id="QGJ-EF-btR"/>
+                            <constraint firstItem="4cv-6H-skJ" firstAttribute="top" secondItem="ljt-EX-mCh" secondAttribute="bottom" id="5W2-pZ-q37"/>
                             <constraint firstItem="ljt-EX-mCh" firstAttribute="top" secondItem="5Np-yS-vWH" secondAttribute="bottom" constant="10" id="bc2-3M-BIJ"/>
                             <constraint firstAttribute="trailing" secondItem="ljt-EX-mCh" secondAttribute="trailing" id="c6L-GL-tns"/>
                             <constraint firstItem="ljt-EX-mCh" firstAttribute="leading" secondItem="DHl-el-oOQ" secondAttribute="leading" id="h3r-fh-Gob"/>
@@ -384,18 +398,19 @@
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
                         <outlet property="imageView" destination="ljt-EX-mCh" id="GOI-5A-m1f"/>
-                        <outlet property="label" destination="OnJ-dO-tIU" id="90T-JA-mJS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="yST-T6-jK7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1207.5" y="407.5"/>
         </scene>
-        <!--Table-->
+        <!--Navigation Controller-->
         <scene sceneID="ZLP-Qq-NTB">
             <objects>
                 <navigationController id="a7D-hI-e2V" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="Table" id="AD3-a8-3Xj"/>
+                    <tabBarItem key="tabBarItem" title="" image="table" id="AD3-a8-3Xj">
+                        <inset key="imageInsets" minX="0.0" minY="7" maxX="0.0" maxY="-7"/>
+                    </tabBarItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="gqE-W5-qbl">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -411,7 +426,11 @@
             <point key="canvasLocation" x="274.5" y="-374.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="collection" width="44" height="45"/>
+        <image name="table" width="45" height="45"/>
+    </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="2Zf-Fc-wiN"/>
+        <segue reference="yJ2-R8-Ydp"/>
     </inferredMetricsTieBreakers>
 </document>

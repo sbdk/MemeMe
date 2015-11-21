@@ -217,7 +217,7 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         NaviBar.hidden = true
         toolBar.hidden = true
         
-        UIGraphicsBeginImageContext(view.frame.size)
+        UIGraphicsBeginImageContextWithOptions(view.frame.size, true, 0.0)
         view.drawViewHierarchyInRect(view.frame, afterScreenUpdates: true)
         let memedImage : UIImage = UIGraphicsGetImageFromCurrentImageContext()
             UIGraphicsEndImageContext()

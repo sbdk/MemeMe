@@ -17,7 +17,7 @@ class MemeTableViewController: UITableViewController {
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
-        self.tableView.reloadData()
+        tableView.reloadData()
 
     }
     
@@ -25,22 +25,31 @@ class MemeTableViewController: UITableViewController {
         
     }
     
+    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
-        return self.memes.count
+        return memes.count
+    }
+    
+    //let row heigth auto adjust to screen orientation
+    override func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
+        if isLandscapeOrientation(){
+            return 50.0
+        } else {
+            return 80.0
+        }
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         
-        let tableCell = tableView.dequeueReusableCellWithIdentifier("MemeTableCell", forIndexPath: indexPath)
+        let tableCell = tableView.dequeueReusableCellWithIdentifier("MemeTableCell", forIndexPath: indexPath) as! MemeCustomTableViewCell
+        
         let meme = self.memes[indexPath.row]
         
-        tableCell.textLabel?.text = meme.bottomText
-        tableCell.imageView?.image = meme.memedImage
-        
-        if let detailLabel = tableCell.detailTextLabel {
-            detailLabel.text = meme.creatTime
-        }
+        tableCell.tableCellImage.backgroundColor = UIColor.blackColor()
+        tableCell.tableCellImage.image = meme.memedImage
+        tableCell.tableCellTopLabel.text = meme.topText
+        tableCell.tableCellBottomLabel.text = meme.bottomText
         
         return tableCell
     }
@@ -51,6 +60,29 @@ class MemeTableViewController: UITableViewController {
         detailVC.meme = self.memes[indexPath.row]
         self.navigationController!.pushViewController(detailVC, animated: true)
         
+    }
+    
+    //add swipe-to-delete function to tableView
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if editingStyle == .Delete {
+            
+            tableView.beginUpdates()
+            
+            let object = UIApplication.sharedApplication().delegate
+            let appDelegate = object as! AppDelegate
+            appDelegate.memes.removeAtIndex(indexPath.row)
+            
+            tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
+            tableView.endUpdates()
+        }
+    }
+    
+  
+
+    //function to check screen's orientation status
+    func isLandscapeOrientation() -> Bool {
+        return UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation)
     }
     
     
