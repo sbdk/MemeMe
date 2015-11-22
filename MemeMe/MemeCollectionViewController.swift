@@ -18,12 +18,14 @@ class MemeCollectionViewController: UICollectionViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
         
         collectionView!.reloadData()
         
     }
     
     override func viewDidLoad() {
+        super.viewDidLoad()
         
         let space: CGFloat = 3.0
         var dimension: CGFloat

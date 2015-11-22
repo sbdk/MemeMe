@@ -18,13 +18,24 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var NaviBar: UINavigationBar!
     @IBOutlet weak var toolBar: UIToolbar!
     
-    //define text attributes for both textfield
-    let memeTextAttributes = [
-        NSStrokeColorAttributeName : UIColor.blackColor(),
-        NSForegroundColorAttributeName: UIColor.whiteColor(),
-        NSFontAttributeName :UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
-        NSStrokeWidthAttributeName : -3.0
-    ]
+    //define a textField method for both top and bottom text field
+    func prepareTextField(textField: UITextField, defaultText: String){
+        
+        let memeTextAttributes = [
+            NSStrokeColorAttributeName : UIColor.blackColor(),
+            NSForegroundColorAttributeName: UIColor.whiteColor(),
+            NSFontAttributeName :UIFont(name: "HelveticaNeue-CondensedBlack", size: 40)!,
+            NSStrokeWidthAttributeName : -3.0
+        ]
+        
+        textField.delegate = self
+        textField.defaultTextAttributes = memeTextAttributes
+        textField.text = defaultText
+        textField.autocapitalizationType = .AllCharacters
+        textField.textAlignment = .Center
+        textField.layer.zPosition = 1
+        
+    }
     
     //hide status bar for bigger editing area
     override func prefersStatusBarHidden() -> Bool {
@@ -49,17 +60,8 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         super.viewDidLoad()
        
         
-        topTextField.defaultTextAttributes = memeTextAttributes
-        topTextField.text = "TOP"
-        topTextField.layer.zPosition = 1
-        topTextField.delegate = self
-        topTextField.textAlignment = NSTextAlignment.Center
-      
-        bottomTextField.defaultTextAttributes = memeTextAttributes
-        bottomTextField.text = "BOTTOM"
-        bottomTextField.layer.zPosition = 1
-        bottomTextField.delegate = self
-        bottomTextField.textAlignment = NSTextAlignment.Center
+        prepareTextField(topTextField, defaultText: "TOP")
+        prepareTextField(bottomTextField, defaultText: "BOTTOM")
         
         //put navigation bar and toolbar on top of main editing view
         NaviBar.layer.zPosition = 2
@@ -132,11 +134,12 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     func imagePickerController(picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : AnyObject]) {
         
         if let tempImage = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            
             imagePickerView.image = tempImage
             dismissViewControllerAnimated(true, completion: nil)
             
-        //enable share button when finish picking image
-        shareButton.enabled = true
+            //enable share button when finish picking image
+            shareButton.enabled = true
         }
     }
     
@@ -151,6 +154,7 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         if textField.text == "TOP" || textField.text == "BOTTOM" {
             textField.text = ""
         }
+        
     }
     
     //dismiss keyboard when user hit return while in textfield

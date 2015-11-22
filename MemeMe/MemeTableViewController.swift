@@ -21,11 +21,6 @@ class MemeTableViewController: UITableViewController {
 
     }
     
-    override func viewDidLoad() {
-        
-    }
-    
-    
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return memes.count
