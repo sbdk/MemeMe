@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class MemeCollectionViewController: UICollectionViewController {
+class MemeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     
@@ -24,17 +24,10 @@ class MemeCollectionViewController: UICollectionViewController {
         
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    //reload collectionView when screen start to rotate
+    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         
-        let space: CGFloat = 3.0
-        var dimension: CGFloat
-        flowLayout.minimumInteritemSpacing = space
-        flowLayout.minimumLineSpacing = space
-        
-        dimension = (view.frame.size.width - (2 * space)) / 3.0
-        flowLayout.itemSize = CGSizeMake(dimension, dimension)
-        
+        collectionView?.reloadData()
     }
     
     override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -42,6 +35,27 @@ class MemeCollectionViewController: UICollectionViewController {
         return memes.count
         
     }
+    
+    //update collectoinViewCell Size according to Screen orientation
+    func collectionView(collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAtIndexPath indexPath: NSIndexPath) -> CGSize {
+        
+        let space: CGFloat = 3.0
+        var dimension: CGFloat
+        flowLayout.minimumInteritemSpacing = space
+        flowLayout.minimumLineSpacing = space
+        
+        if isLandscapeOrientation(){
+            dimension = (view.frame.size.width - (4 * space)) / 5.0
+            flowLayout.itemSize = CGSizeMake(dimension, dimension)
+            return flowLayout.itemSize
+            
+        } else {
+            dimension = (view.frame.size.width - (2 * space)) / 3.0
+            flowLayout.itemSize = CGSizeMake(dimension, dimension)
+            return flowLayout.itemSize
+            }
+    }
+
     
     override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
@@ -60,6 +74,12 @@ class MemeCollectionViewController: UICollectionViewController {
         let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
         detailVC.meme = self.memes[indexPath.item]
         self.navigationController?.pushViewController(detailVC, animated: true)
+    }
+    
+    //function to check screen's orientation status
+    func isLandscapeOrientation() -> Bool {
+        
+        return UIInterfaceOrientationIsLandscape(UIApplication.sharedApplication().statusBarOrientation)
     }
     
 }
