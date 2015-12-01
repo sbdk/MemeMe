@@ -9,9 +9,11 @@
 import Foundation
 import UIKit
 
-class MemeCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class MemeCollectionViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
+    
+    @IBOutlet var collectionView: UICollectionView!
     
     var memes: [Meme] {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
@@ -20,17 +22,38 @@ class MemeCollectionViewController: UICollectionViewController, UICollectionView
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        collectionView!.reloadData()
+        collectionView?.reloadData()
         
+    }
+    
+    override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
+        
+        super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
+        
+        coordinator.animateAlongsideTransition({ (context) -> Void in
+            }, completion: { (context) -> Void in
+                self.flowLayout.invalidateLayout()
+        })
     }
     
     //reload collectionView when screen start to rotate
-    override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
+    /*override func willRotateToInterfaceOrientation(toInterfaceOrientation: UIInterfaceOrientation, duration: NSTimeInterval) {
         
-        collectionView?.reloadData()
+        collectionView.performBatchUpdates(nil, completion: nil)
+        collectionView.reloadData()
+    
+    }*/
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        //navigationItem.leftBarButtonItem = editButtonItem()
+       
+        //navigationController?.hidesBarsOnTap = true
+        
     }
     
-    override func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return memes.count
         
@@ -57,19 +80,19 @@ class MemeCollectionViewController: UICollectionViewController, UICollectionView
     }
 
     
-    override func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
+    func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
         let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionCell", forIndexPath: indexPath)
         
         let meme = memes[indexPath.item]
+  
         collectionCell.backgroundView = UIImageView(image: meme.memedImage)
         
         return collectionCell
         
     }
     
-    
-    override func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
+    func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
         let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
         detailVC.meme = self.memes[indexPath.item]
