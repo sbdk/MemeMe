@@ -12,8 +12,10 @@ import UIKit
 class MemeCollectionViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
-    
     @IBOutlet var collectionView: UICollectionView!
+    @IBOutlet weak var addButton: UIBarButtonItem!
+    @IBOutlet weak var editButton: UIBarButtonItem!
+    @IBOutlet weak var trashButton: UIBarButtonItem!
     
     var memes: [Meme] {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
@@ -23,6 +25,9 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         super.viewWillAppear(animated)
         
         collectionView?.reloadData()
+        navigationController?.toolbar.hidden = true
+        
+        
         
     }
     
@@ -30,10 +35,11 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         
         super.viewWillTransitionToSize(size, withTransitionCoordinator: coordinator)
         
-        coordinator.animateAlongsideTransition({ (context) -> Void in
-            }, completion: { (context) -> Void in
-                self.flowLayout.invalidateLayout()
-        })
+        coordinator.animateAlongsideTransition({context in
+
+            self.flowLayout?.invalidateLayout()
+
+            }, completion: nil)
     }
     
     //reload collectionView when screen start to rotate
@@ -47,11 +53,38 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //navigationItem.leftBarButtonItem = editButtonItem()
-       
-        //navigationController?.hidesBarsOnTap = true
-        
     }
+    
+    @IBAction func pressEdit(sender: AnyObject) {
+        
+        //prevent unwanted button title slow transition
+        UIView.setAnimationsEnabled(false)
+        
+        collectionView.allowsMultipleSelection = !collectionView.allowsMultipleSelection
+        
+        navigationController?.toolbar.hidden = !navigationController!.toolbar.hidden
+        tabBarController?.tabBar.hidden = !tabBarController!.tabBar.hidden
+        
+        if navigationController?.toolbar.hidden == false {
+            editButton.title = "Cancel"
+            navigationItem.rightBarButtonItem?.enabled = false
+            navigationController?.toolbar.frame.origin.y += (tabBarController?.tabBar.frame.height)!
+            
+        } else {
+            
+            editButton.title = "Select"
+            navigationItem.rightBarButtonItem?.enabled = true
+            navigationController?.toolbar.frame.origin.y -= (tabBarController?.tabBar.frame.height)!
+            
+        }
+        
+        collectionView.reloadData()
+        
+        UIView.setAnimationsEnabled(true)
+    }
+    
+
+    
     
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
@@ -82,11 +115,13 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
         
-        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionCell", forIndexPath: indexPath)
+        let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionCell", forIndexPath: indexPath) as! MemeCustomCollectionViewCell
         
         let meme = memes[indexPath.item]
-  
-        collectionCell.backgroundView = UIImageView(image: meme.memedImage)
+        
+        collectionCell.collectionCellImage.image = meme.memedImage
+        collectionCell.collectionCellImage.alpha = 1.0
+        collectionCell.checkMarkImage.hidden = true
         
         return collectionCell
         
@@ -94,10 +129,32 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
         
-        let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
-        detailVC.meme = self.memes[indexPath.item]
-        self.navigationController?.pushViewController(detailVC, animated: true)
+        
+        if self.collectionView.allowsMultipleSelection == false {
+            
+            let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
+            detailVC.meme = self.memes[indexPath.item]
+            self.navigationController?.pushViewController(detailVC, animated: true)
+        } else {
+            
+            let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) as! MemeCustomCollectionViewCell
+            selectedCell.collectionCellImage.alpha = 0.7
+            selectedCell.checkMarkImage.hidden = false
+            
+        }
+        
     }
+    
+    func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
+        
+        let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) as! MemeCustomCollectionViewCell
+        selectedCell.collectionCellImage.alpha = 1.0
+        selectedCell.checkMarkImage.hidden = true
+        
+    }
+    
+    
+
     
     //function to check screen's orientation status
     func isLandscapeOrientation() -> Bool {

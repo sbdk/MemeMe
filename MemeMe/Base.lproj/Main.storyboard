@@ -302,16 +302,22 @@
         <!--Navigation Controller-->
         <scene sceneID="izf-VX-5ex">
             <objects>
-                <navigationController id="CaF-eh-z40" sceneMemberID="viewController">
+                <navigationController toolbarHidden="NO" id="CaF-eh-z40" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="" image="collection" id="DvA-W4-Pdm">
                         <inset key="imageInsets" minX="0.0" minY="7" maxX="0.0" maxY="-6"/>
                     </tabBarItem>
+                    <toolbarItems/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="QGg-hX-66z">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <animations/>
                     </navigationBar>
+                    <toolbar key="toolbar" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="k4U-KX-jcV">
+                        <rect key="frame" x="0.0" y="623" width="375" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <animations/>
+                    </toolbar>
                     <connections>
                         <segue destination="2xz-zM-dNO" kind="relationship" relationship="rootViewController" id="Gae-sV-qeg"/>
                     </connections>
@@ -336,16 +342,62 @@
                             <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                         </collectionViewFlowLayout>
                         <cells>
-                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MemeCollectionCell" id="T5r-za-ZP9">
+                            <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="MemeCollectionCell" id="T5r-za-ZP9" customClass="MemeCustomCollectionViewCell" customModule="MemeMe" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="64" width="90" height="90"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                                     <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="wRe-ob-bFI">
+                                            <rect key="frame" x="0.0" y="0.0" width="90" height="90"/>
+                                            <animations/>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="checkMark" translatesAutoresizingMaskIntoConstraints="NO" id="04U-9P-Pyl">
+                                            <rect key="frame" x="62" y="62" width="20" height="20"/>
+                                            <animations/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="20" id="Xrg-af-iNI"/>
+                                                <constraint firstAttribute="width" constant="20" id="w60-Er-Iij"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
                                     <animations/>
                                     <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                 </view>
                                 <animations/>
+                                <constraints>
+                                    <constraint firstAttribute="trailing" secondItem="wRe-ob-bFI" secondAttribute="trailing" id="H7J-L1-oXO"/>
+                                    <constraint firstItem="wRe-ob-bFI" firstAttribute="leading" secondItem="T5r-za-ZP9" secondAttribute="leading" id="IlY-aT-TOh"/>
+                                    <constraint firstItem="04U-9P-Pyl" firstAttribute="bottom" secondItem="T5r-za-ZP9" secondAttribute="bottomMargin" id="MyH-0J-Utc"/>
+                                    <constraint firstAttribute="trailing" secondItem="wRe-ob-bFI" secondAttribute="trailing" constant="5" id="QqK-C1-tXZ"/>
+                                    <constraint firstItem="04U-9P-Pyl" firstAttribute="trailing" secondItem="T5r-za-ZP9" secondAttribute="trailingMargin" id="TcU-M3-EeN"/>
+                                    <constraint firstItem="wRe-ob-bFI" firstAttribute="leading" secondItem="T5r-za-ZP9" secondAttribute="leading" id="XpO-K9-48Z"/>
+                                    <constraint firstAttribute="bottom" secondItem="wRe-ob-bFI" secondAttribute="bottom" id="c9R-gS-lqi"/>
+                                    <constraint firstAttribute="bottom" secondItem="wRe-ob-bFI" secondAttribute="bottom" id="g6j-hn-CaO"/>
+                                    <constraint firstItem="wRe-ob-bFI" firstAttribute="leading" secondItem="T5r-za-ZP9" secondAttribute="leading" constant="5" id="gZz-hx-fWe"/>
+                                    <constraint firstItem="wRe-ob-bFI" firstAttribute="top" secondItem="T5r-za-ZP9" secondAttribute="top" constant="5" id="meE-3a-N7h"/>
+                                    <constraint firstAttribute="trailing" secondItem="wRe-ob-bFI" secondAttribute="trailing" id="wGA-fn-PJ2"/>
+                                    <constraint firstAttribute="bottom" secondItem="wRe-ob-bFI" secondAttribute="bottom" constant="5" id="wv8-DP-nTM"/>
+                                    <constraint firstItem="wRe-ob-bFI" firstAttribute="top" secondItem="T5r-za-ZP9" secondAttribute="top" id="x2m-1Q-sn4"/>
+                                    <constraint firstItem="wRe-ob-bFI" firstAttribute="top" secondItem="T5r-za-ZP9" secondAttribute="top" id="xNb-4x-wEX"/>
+                                </constraints>
+                                <variation key="default">
+                                    <mask key="constraints">
+                                        <exclude reference="QqK-C1-tXZ"/>
+                                        <exclude reference="XpO-K9-48Z"/>
+                                        <exclude reference="g6j-hn-CaO"/>
+                                        <exclude reference="gZz-hx-fWe"/>
+                                        <exclude reference="meE-3a-N7h"/>
+                                        <exclude reference="wGA-fn-PJ2"/>
+                                        <exclude reference="wv8-DP-nTM"/>
+                                        <exclude reference="x2m-1Q-sn4"/>
+                                    </mask>
+                                </variation>
+                                <connections>
+                                    <outlet property="checkMarkImage" destination="04U-9P-Pyl" id="9y7-0f-pWw"/>
+                                    <outlet property="collectionCellImage" destination="wRe-ob-bFI" id="UEM-MZ-s4Q"/>
+                                </connections>
                             </collectionViewCell>
                         </cells>
                         <connections>
@@ -353,8 +405,16 @@
                             <outlet property="delegate" destination="2xz-zM-dNO" id="hla-ny-9Yp"/>
                         </connections>
                     </collectionView>
+                    <toolbarItems>
+                        <barButtonItem style="plain" systemItem="flexibleSpace" id="akH-D2-ZWT"/>
+                        <barButtonItem systemItem="trash" id="iXq-3D-sVz"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" title="Sent Memes" id="Wzq-Pb-b3Q">
-                        <barButtonItem key="leftBarButtonItem" systemItem="edit" id="Lbf-EG-vCi"/>
+                        <barButtonItem key="leftBarButtonItem" title="Select" id="9pk-y7-g9G">
+                            <connections>
+                                <action selector="pressEdit:" destination="2xz-zM-dNO" id="0d9-CV-GP4"/>
+                            </connections>
+                        </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="WtE-9y-CEy">
                             <connections>
                                 <segue destination="BYZ-38-t0r" kind="presentation" id="cfe-13-cqh"/>
@@ -363,8 +423,11 @@
                     </navigationItem>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
+                        <outlet property="addButton" destination="WtE-9y-CEy" id="KeA-6C-HAv"/>
                         <outlet property="collectionView" destination="ct0-pt-IjE" id="ZLv-GI-JaY"/>
+                        <outlet property="editButton" destination="9pk-y7-g9G" id="Qn4-cA-dD3"/>
                         <outlet property="flowLayout" destination="hBd-hI-Q8Q" id="9ET-cD-7uk"/>
+                        <outlet property="trashButton" destination="iXq-3D-sVz" id="dRL-n7-Ozd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="sc5-gC-HSE" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -429,6 +492,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="checkMark" width="79" height="79"/>
         <image name="collection" width="44" height="45"/>
         <image name="table" width="45" height="45"/>
     </resources>
