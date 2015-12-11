@@ -407,7 +407,11 @@
                     </collectionView>
                     <toolbarItems>
                         <barButtonItem style="plain" systemItem="flexibleSpace" id="akH-D2-ZWT"/>
-                        <barButtonItem systemItem="trash" id="iXq-3D-sVz"/>
+                        <barButtonItem systemItem="trash" id="iXq-3D-sVz">
+                            <connections>
+                                <action selector="pressDelete:" destination="2xz-zM-dNO" id="Cg6-or-I5R"/>
+                            </connections>
+                        </barButtonItem>
                     </toolbarItems>
                     <navigationItem key="navigationItem" title="Sent Memes" id="Wzq-Pb-b3Q">
                         <barButtonItem key="leftBarButtonItem" title="Select" id="9pk-y7-g9G">

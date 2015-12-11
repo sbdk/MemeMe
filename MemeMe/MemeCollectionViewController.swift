@@ -83,6 +83,39 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         UIView.setAnimationsEnabled(true)
     }
     
+    @IBAction func pressDelete(sender: AnyObject) {
+        
+        collectionView.performBatchUpdates(
+            {
+            let object = UIApplication.sharedApplication().delegate
+            let appDelegate = object as! AppDelegate
+        
+            let itemPaths = self.collectionView.indexPathsForSelectedItems()
+            
+            //set an array to store all selected Cell index
+            var indexArray = [Int]()
+                
+            for index in itemPaths! {
+                    
+                indexArray.append(index.item)
+                    
+            }
+            
+            //set an array to store sotrted cell index from largest to smallest
+            let sortedArray = indexArray.sort({$0 > $1})
+            
+            //remove item from dataSource array backward
+            for index in sortedArray
+            {
+                appDelegate.memes.removeAtIndex(index)
+            }
+                
+            self.collectionView.deleteItemsAtIndexPaths(itemPaths!)
+            
+            }
+            , completion: nil)
+        
+    }
 
     
     
@@ -152,8 +185,6 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         selectedCell.checkMarkImage.hidden = true
         
     }
-    
-    
 
     
     //function to check screen's orientation status
