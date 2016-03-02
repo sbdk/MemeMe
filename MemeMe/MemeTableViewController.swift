@@ -11,6 +11,12 @@ import UIKit
 
 class MemeTableViewController: UITableViewController {
     
+    var FilePath : String {
+        let manager = NSFileManager.defaultManager()
+        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+        return url.URLByAppendingPathComponent("fileArray").path!
+    }
+
     var memes: [Meme] {
         return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
     }
@@ -18,7 +24,13 @@ class MemeTableViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         tableView.reloadData()
-
+        NSKeyedArchiver.archiveRootObject(memes, toFile: FilePath)
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        (UIApplication.sharedApplication().delegate as! AppDelegate).memes = NSKeyedUnarchiver.unarchiveObjectWithFile(FilePath) as? [Meme] ?? [Meme]()
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {

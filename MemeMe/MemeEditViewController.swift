@@ -234,11 +234,18 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     
     func saveMeme() {
         
-        var mememe = Meme (topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage(), creatTime: String(NSDate()))
+        //var mememe = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage(), creatTime: String(NSDate()))
         
-        let object = UIApplication.sharedApplication().delegate
-        let appDelegate = object as! AppDelegate
-        appDelegate.memes.append(mememe)
+        
+        let finishedMeme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage())
+        
+        //finishedMeme.topText = topTextField.text!
+        //finishedMeme.bottomText = bottomTextField.text!
+        //finishedMeme.pickedImage = imagePickerView.image!
+        //finishedMeme.memedImage = generateMemedImage()
+        
+        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
+        appDelegate.memes.append(finishedMeme)
     }
     
 }

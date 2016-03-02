@@ -27,8 +27,6 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         collectionView?.reloadData()
         navigationController?.toolbar.hidden = true
         
-        
-        
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
