@@ -8,31 +8,43 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class MemeTableViewController: UITableViewController {
-    
-    var FilePath : String {
-        let manager = NSFileManager.defaultManager()
-        let url = manager.URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-        return url.URLByAppendingPathComponent("fileArray").path!
-    }
 
-    var memes: [Meme] {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
-    }
+    //var memes = CoreDataMeme.sharedInstance().memes
+    
+    var memes = [Meme]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
+        
+        memes = fetchAllMemes()
+        
         tableView.reloadData()
-        NSKeyedArchiver.archiveRootObject(memes, toFile: FilePath)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        (UIApplication.sharedApplication().delegate as! AppDelegate).memes = NSKeyedUnarchiver.unarchiveObjectWithFile(FilePath) as? [Meme] ?? [Meme]()
     }
     
+    lazy var sharedContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
+    
+    func fetchAllMemes() -> [Meme]{
+        let fetchRequest = NSFetchRequest(entityName: "Meme")
+        
+        do{
+            return try sharedContext.executeFetchRequest(fetchRequest) as! [Meme]
+        } catch let error as NSError {
+            print("there is a error: \(error.localizedDescription)")
+            return [Meme]()
+        }
+    }
+    
+    //Table View
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         return memes.count
@@ -52,6 +64,7 @@ class MemeTableViewController: UITableViewController {
         let tableCell = tableView.dequeueReusableCellWithIdentifier("MemeTableCell", forIndexPath: indexPath) as! MemeCustomTableViewCell
         
         let meme = self.memes[indexPath.row]
+        
         
         tableCell.tableCellImage.backgroundColor = UIColor.blackColor()
         tableCell.tableCellImage.image = meme.memedImage
@@ -76,12 +89,16 @@ class MemeTableViewController: UITableViewController {
             
             tableView.beginUpdates()
             
-            let object = UIApplication.sharedApplication().delegate
-            let appDelegate = object as! AppDelegate
-            appDelegate.memes.removeAtIndex(indexPath.row)
+            let memeToRemove = memes[indexPath.row]
+            print(indexPath.row)
+            print(memes.count)
+            memes.removeAtIndex(indexPath.row)
             
             tableView.deleteRowsAtIndexPaths([indexPath], withRowAnimation: .Automatic)
             tableView.endUpdates()
+            
+            sharedContext.deleteObject(memeToRemove)
+            CoreDataStackManager.sharedInstance().saveContext()
         }
     }
     

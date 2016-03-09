@@ -8,40 +8,28 @@
 
 import Foundation
 import UIKit
+import CoreData
 
-class Meme: NSObject, NSCoding {
+class Meme: NSManagedObject {
     
-    var topText: String = ""
-    var bottomText: String = ""
-    var pickedImage: UIImage? = nil
-    var memedImage: UIImage? = nil
-    //var creatTime: String = ""
+    @NSManaged var topText: String
+    @NSManaged var bottomText: String
+    @NSManaged var pickedImage: UIImage?
+    @NSManaged var memedImage: UIImage?
     
-    init(topText: String, bottomText: String, pickedImage: UIImage, memedImage: UIImage) {
-        self.topText = topText
-        self.bottomText = bottomText
-        self.pickedImage = pickedImage
-        self.memedImage = memedImage
+    override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
     }
     
-    required init(coder unarchiver: NSCoder) {
-        super.init()
+    init(topTextInput: String, bottomTextInput: String, pickedImageFile: UIImage, memedImageFile: UIImage, context: NSManagedObjectContext) {
         
-        // Unarchive the data, one property at a time
-        topText = unarchiver.decodeObjectForKey("TopText") as! String
-        bottomText = unarchiver.decodeObjectForKey("BottomText") as! String
-        pickedImage = unarchiver.decodeObjectForKey("PickedImage") as? UIImage
-        memedImage = unarchiver.decodeObjectForKey("MemedImage") as? UIImage
+        let entity =  NSEntityDescription.entityForName("Meme", inManagedObjectContext: context)!
+        super.init(entity: entity, insertIntoManagedObjectContext: context)
         
+        topText = topTextInput
+        bottomText = bottomTextInput
+        pickedImage = pickedImageFile
+        memedImage = memedImageFile
     }
     
-    
-    func encodeWithCoder(archiver: NSCoder) {
-        
-        // archive the information inside the Person, one property at a time
-        archiver.encodeObject(topText, forKey: "TopText")
-        archiver.encodeObject(bottomText, forKey: "BottomText")
-        archiver.encodeObject(pickedImage, forKey: "PickedImage")
-        archiver.encodeObject(memedImage, forKey: "MemedImage")
-    }
 }

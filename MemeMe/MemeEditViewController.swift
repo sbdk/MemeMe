@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate, UITextFieldDelegate {
     
@@ -17,6 +18,8 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var shareButton: UIBarButtonItem!
     @IBOutlet weak var NaviBar: UINavigationBar!
     @IBOutlet weak var toolBar: UIToolbar!
+    
+    var memes = [Meme]()
     
     //define a textField method for both top and bottom text field
     func prepareTextField(textField: UITextField, defaultText: String){
@@ -66,6 +69,9 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         //put navigation bar and toolbar on top of main editing view
         NaviBar.layer.zPosition = 2
         toolBar.layer.zPosition = 2
+        
+        memes = fetchAllMemes()
+ 
     }
     
 
@@ -233,20 +239,29 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     }
     
     func saveMeme() {
+
+        let finishedMeme = Meme(topTextInput: topTextField.text!, bottomTextInput: bottomTextField.text!, pickedImageFile: imagePickerView.image!, memedImageFile: generateMemedImage(), context: sharedContext)
         
-        //var mememe = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage(), creatTime: String(NSDate()))
+        memes.append(finishedMeme)
         
+        CoreDataStackManager.sharedInstance().saveContext()
         
-        let finishedMeme = Meme(topText: topTextField.text!, bottomText: bottomTextField.text!, pickedImage: imagePickerView.image!, memedImage: generateMemedImage())
-        
-        //finishedMeme.topText = topTextField.text!
-        //finishedMeme.bottomText = bottomTextField.text!
-        //finishedMeme.pickedImage = imagePickerView.image!
-        //finishedMeme.memedImage = generateMemedImage()
-        
-        let appDelegate = UIApplication.sharedApplication().delegate as! AppDelegate
-        appDelegate.memes.append(finishedMeme)
     }
     
+    lazy var sharedContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
+    
+    func fetchAllMemes() -> [Meme]{
+        let fetchRequest = NSFetchRequest(entityName: "Meme")
+        
+        do{
+            return try sharedContext.executeFetchRequest(fetchRequest) as! [Meme]
+        } catch let error as NSError {
+            print("there is a error: \(error.localizedDescription)")
+            return [Meme]()
+        }
+    }
+
 }
 

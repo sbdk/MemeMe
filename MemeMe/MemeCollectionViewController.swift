@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import CoreData
 
 class MemeCollectionViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     
@@ -17,16 +18,14 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var trashButton: UIBarButtonItem!
     
-    var memes: [Meme] {
-        return (UIApplication.sharedApplication().delegate as! AppDelegate).memes
-    }
+    var memes = [Meme]()
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
-        collectionView?.reloadData()
         navigationController?.toolbar.hidden = true
-        
+        memes = fetchAllMemes()
+        collectionView?.reloadData()
     }
     
     override func viewWillTransitionToSize(size: CGSize, withTransitionCoordinator coordinator: UIViewControllerTransitionCoordinator) {
@@ -85,8 +84,6 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         
         collectionView.performBatchUpdates(
             {
-            let object = UIApplication.sharedApplication().delegate
-            let appDelegate = object as! AppDelegate
         
             let itemPaths = self.collectionView.indexPathsForSelectedItems()
             
@@ -96,6 +93,7 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
             for index in itemPaths! {
                     
                 indexArray.append(index.item)
+                print(indexArray)
                     
             }
             
@@ -105,7 +103,12 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
             //remove item from dataSource array backward
             for index in sortedArray
             {
-                appDelegate.memes.removeAtIndex(index)
+                
+                let memeToRemove = self.memes[index]
+                self.memes.removeAtIndex(index)
+                
+                self.sharedContext.deleteObject(memeToRemove)
+                CoreDataStackManager.sharedInstance().saveContext()
             }
                 
             self.collectionView.deleteItemsAtIndexPaths(itemPaths!)
@@ -115,8 +118,22 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         
     }
 
+    lazy var sharedContext = {
+        return CoreDataStackManager.sharedInstance().managedObjectContext
+    }()
     
+    func fetchAllMemes() -> [Meme]{
+        let fetchRequest = NSFetchRequest(entityName: "Meme")
+        
+        do{
+            return try sharedContext.executeFetchRequest(fetchRequest) as! [Meme]
+        } catch let error as NSError {
+            print("there is a error: \(error.localizedDescription)")
+            return [Meme]()
+        }
+    }
     
+    //Collection View
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         
         return memes.count
