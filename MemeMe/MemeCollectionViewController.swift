@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import CoreData
 
-class MemeCollectionViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class MemeCollectionViewController: UIViewController, UICollectionViewDataSource,UICollectionViewDelegate, UICollectionViewDelegateFlowLayout, NSFetchedResultsControllerDelegate {
     
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
     @IBOutlet var collectionView: UICollectionView!
@@ -18,13 +18,21 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
     @IBOutlet weak var editButton: UIBarButtonItem!
     @IBOutlet weak var trashButton: UIBarButtonItem!
     
-    var memes = [Meme]()
+    var selectedIndexes = [NSIndexPath]()
+    var insertedIndexPaths: [NSIndexPath]!
+    var deletedIndexPaths: [NSIndexPath]!
+    var updatedIndexPaths: [NSIndexPath]!
     
     override func viewWillAppear(animated: Bool) {
         super.viewWillAppear(animated)
         
         navigationController?.toolbar.hidden = true
-        memes = fetchAllMemes()
+        fetchedResultController.delegate = self
+        
+        do{
+            try fetchedResultController.performFetch()
+        } catch {print(error)}
+        
         collectionView?.reloadData()
     }
     
@@ -82,62 +90,32 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
     
     @IBAction func pressDelete(sender: AnyObject) {
         
-        collectionView.performBatchUpdates(
-            {
+        deleteSelectedCells()
         
-            let itemPaths = self.collectionView.indexPathsForSelectedItems()
+        /*collectionView.performBatchUpdates({
             
-            //set an array to store all selected Cell index
-            var indexArray = [Int]()
-                
-            for index in itemPaths! {
-                    
-                indexArray.append(index.item)
-                print(indexArray)
-                    
-            }
+            let seletedItemPaths = self.collectionView.indexPathsForSelectedItems()
             
-            //set an array to store sotrted cell index from largest to smallest
-            let sortedArray = indexArray.sort({$0 > $1})
-            
-            //remove item from dataSource array backward
-            for index in sortedArray
-            {
+            for itemPath in seletedItemPaths! where ((seletedItemPaths?.isEmpty) == false) {
                 
-                let memeToRemove = self.memes[index]
-                self.memes.removeAtIndex(index)
-                
+                let memeToRemove = self.fetchedResultController.objectAtIndexPath(itemPath) as! Meme
                 self.sharedContext.deleteObject(memeToRemove)
                 CoreDataStackManager.sharedInstance().saveContext()
             }
-                
-            self.collectionView.deleteItemsAtIndexPaths(itemPaths!)
             
-            }
-            , completion: nil)
-        
+            }, completion: nil)
+        */
     }
 
     lazy var sharedContext = {
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }()
-    
-    func fetchAllMemes() -> [Meme]{
-        let fetchRequest = NSFetchRequest(entityName: "Meme")
-        
-        do{
-            return try sharedContext.executeFetchRequest(fetchRequest) as! [Meme]
-        } catch let error as NSError {
-            print("there is a error: \(error.localizedDescription)")
-            return [Meme]()
-        }
-    }
+
     
     //Collection View
     func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        
-        return memes.count
-        
+        let sessionInfo = fetchedResultController.sections![section]
+        return sessionInfo.numberOfObjects
     }
     
     //update collectoinViewCell Size according to Screen orientation
@@ -162,35 +140,23 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
 
     
     func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
-        
         let collectionCell = collectionView.dequeueReusableCellWithReuseIdentifier("MemeCollectionCell", forIndexPath: indexPath) as! MemeCustomCollectionViewCell
-        
-        let meme = memes[indexPath.item]
-        
-        collectionCell.collectionCellImage.image = meme.memedImage
-        collectionCell.collectionCellImage.alpha = 1.0
-        collectionCell.checkMarkImage.hidden = true
-        
+        let meme = fetchedResultController.objectAtIndexPath(indexPath) as! Meme
+        configureCell(collectionCell, meme: meme)
         return collectionCell
-        
     }
     
     func collectionView(collectionView: UICollectionView, didSelectItemAtIndexPath indexPath: NSIndexPath) {
-        
-        
         if self.collectionView.allowsMultipleSelection == false {
-            
             let detailVC = self.storyboard?.instantiateViewControllerWithIdentifier("MemeDetailViewController") as! MemeDetailViewController
-            detailVC.meme = self.memes[indexPath.item]
+            detailVC.meme = fetchedResultController.objectAtIndexPath(indexPath) as! Meme
             self.navigationController?.pushViewController(detailVC, animated: true)
-        } else {
             
+        } else {
             let selectedCell = collectionView.cellForItemAtIndexPath(indexPath) as! MemeCustomCollectionViewCell
             selectedCell.collectionCellImage.alpha = 0.7
             selectedCell.checkMarkImage.hidden = false
-            
         }
-        
     }
     
     func collectionView(collectionView: UICollectionView, didDeselectItemAtIndexPath indexPath: NSIndexPath) {
@@ -200,7 +166,89 @@ class MemeCollectionViewController: UIViewController, UICollectionViewDataSource
         selectedCell.checkMarkImage.hidden = true
         
     }
-
+    
+    //implemente FetchedResultController Delegate Method
+    func controllerWillChangeContent(controller: NSFetchedResultsController) {
+        
+        insertedIndexPaths = [NSIndexPath]()
+        deletedIndexPaths = [NSIndexPath]()
+        updatedIndexPaths = [NSIndexPath]()
+    }
+    //
+    // This is the most interesting method. Take particular note of way the that newIndexPath
+    // parameter gets unwrapped and put into an array literal: [newIndexPath!]
+    //
+    
+    func controller(controller: NSFetchedResultsController,
+        didChangeObject anObject: AnyObject,
+        atIndexPath indexPath: NSIndexPath?,
+        forChangeType type: NSFetchedResultsChangeType,
+        newIndexPath: NSIndexPath?) {
+            
+            switch type {
+            case .Insert:
+                insertedIndexPaths.append(newIndexPath!)
+                break
+                
+            case .Delete:
+                deletedIndexPaths.append(indexPath!)
+                break
+                
+            case .Update:
+                updatedIndexPaths.append(indexPath!)
+                break
+                
+            case .Move:
+                break
+                
+            default:
+                break
+            }
+    }
+    
+    func controllerDidChangeContent(controller: NSFetchedResultsController) {
+        collectionView.performBatchUpdates({
+            
+            for indexPath in self.insertedIndexPaths{
+                 self.collectionView.insertItemsAtIndexPaths([indexPath])
+            }
+            for indexPath in self.deletedIndexPaths {
+                self.collectionView.deleteItemsAtIndexPaths([indexPath])
+            }
+            for indexPath in self.updatedIndexPaths {
+                self.collectionView.reloadItemsAtIndexPaths([indexPath])
+            }
+            
+        },completion: nil)
+    }
+    
+    func configureCell(cell: MemeCustomCollectionViewCell, meme: Meme){
+        cell.collectionCellImage.image = meme.memedImage
+        cell.collectionCellImage.alpha = 1.0
+        cell.checkMarkImage.hidden = true
+    }
+    
+    lazy var fetchedResultController: NSFetchedResultsController = {
+        
+        let fetchRequest = NSFetchRequest(entityName: "Meme")
+        fetchRequest.sortDescriptors = [NSSortDescriptor(key: "generateTime", ascending: true)]
+        let fetchedRequestController = NSFetchedResultsController(fetchRequest: fetchRequest, managedObjectContext: self.sharedContext, sectionNameKeyPath: nil, cacheName: nil)
+        return fetchedRequestController
+    }()
+    
+    func deleteSelectedCells() {
+        var memeToDelete = [Meme]()
+        selectedIndexes = self.collectionView.indexPathsForSelectedItems()!
+        
+        for indexPath in selectedIndexes {
+            memeToDelete.append(self.fetchedResultController.objectAtIndexPath(indexPath) as! Meme)
+        }
+        for meme in memeToDelete {
+            sharedContext.deleteObject(meme)
+            CoreDataStackManager.sharedInstance().saveContext()
+        }
+        selectedIndexes = [NSIndexPath]()
+    }
     
     //function to check screen's orientation status
     func isLandscapeOrientation() -> Bool {

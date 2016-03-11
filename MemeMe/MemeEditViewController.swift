@@ -19,8 +19,6 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBOutlet weak var NaviBar: UINavigationBar!
     @IBOutlet weak var toolBar: UIToolbar!
     
-    var memes = [Meme]()
-    
     //define a textField method for both top and bottom text field
     func prepareTextField(textField: UITextField, defaultText: String){
         
@@ -69,8 +67,6 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         //put navigation bar and toolbar on top of main editing view
         NaviBar.layer.zPosition = 2
         toolBar.layer.zPosition = 2
-        
-        memes = fetchAllMemes()
  
     }
     
@@ -104,9 +100,9 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     @IBAction func sharePhoto(sender: AnyObject) {
         
         let finishedImage = generateMemedImage()
-        
         let shareViewController = UIActivityViewController(activityItems: [finishedImage], applicationActivities: nil)
-
+        presentViewController(shareViewController, animated: true, completion: nil)
+        
         shareViewController.completionWithItemsHandler = {
             activity, completed, items, error in
             if completed {
@@ -114,9 +110,6 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
-        
-        presentViewController(shareViewController, animated: true, completion: nil)
-        
     }
     
     @IBAction func cancelMeme(sender: AnyObject) {
@@ -149,9 +142,9 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         }
     }
     
-    func imagePickerControllerDidCancel(picker: UIImagePickerController) {
-        dismissViewControllerAnimated(true, completion: nil)
-    }
+    //func imagePickerControllerDidCancel(picker: UIImagePickerController) {
+        //dismissViewControllerAnimated(true, completion: nil)
+    //}
     
     
     //clear textfield if they contain default stings.
@@ -241,9 +234,7 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
     func saveMeme() {
 
         let finishedMeme = Meme(topTextInput: topTextField.text!, bottomTextInput: bottomTextField.text!, pickedImageFile: imagePickerView.image!, memedImageFile: generateMemedImage(), context: sharedContext)
-        
-        memes.append(finishedMeme)
-        
+        sharedContext.insertObject(finishedMeme)
         CoreDataStackManager.sharedInstance().saveContext()
         
     }
@@ -252,16 +243,5 @@ class MemeEditViewController: UIViewController, UIImagePickerControllerDelegate,
         return CoreDataStackManager.sharedInstance().managedObjectContext
     }()
     
-    func fetchAllMemes() -> [Meme]{
-        let fetchRequest = NSFetchRequest(entityName: "Meme")
-        
-        do{
-            return try sharedContext.executeFetchRequest(fetchRequest) as! [Meme]
-        } catch let error as NSError {
-            print("there is a error: \(error.localizedDescription)")
-            return [Meme]()
-        }
-    }
-
 }
 

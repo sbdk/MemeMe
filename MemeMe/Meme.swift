@@ -16,6 +16,7 @@ class Meme: NSManagedObject {
     @NSManaged var bottomText: String
     @NSManaged var pickedImage: UIImage?
     @NSManaged var memedImage: UIImage?
+    @NSManaged var generateTime: NSDate
     
     override init(entity: NSEntityDescription, insertIntoManagedObjectContext context: NSManagedObjectContext?) {
         super.init(entity: entity, insertIntoManagedObjectContext: context)
@@ -30,6 +31,8 @@ class Meme: NSManagedObject {
         bottomText = bottomTextInput
         pickedImage = pickedImageFile
         memedImage = memedImageFile
+        
+        generateTime = NSDate()
     }
     
 }
